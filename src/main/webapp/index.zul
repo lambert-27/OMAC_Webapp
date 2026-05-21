@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page title="OMAC Hour Logger"?>
+<zk>
+	<style>
+		.graph-container {
+		display: flex;
+		flex-direction: row;
+		gap: 3px;
+		padding: 20px;
+		background: #0d1117;
+		border-radius: 8px;
+		width: fit-content;
+		}
+		.graph-col {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		}
+		.graph-cell {
+		width: 13px;
+		height: 13px;
+		border-radius: 2px;
+		background: #161b22;
+		}
+		.hours-0  { background: #161b22; }
+		.hours-1  { background: #0e4429; }
+		.hours-2  { background: #006d32; }
+		.hours-3  { background: #26a641; }
+		.hours-4  { background: #39d353; }
+		.form-box {
+		padding: 20px;
+		background: #f5f5f5;
+		border-radius: 8px;
+		margin-bottom: 20px;
+		width: 400px;
+		}
+		.form-row {
+		margin-bottom: 10px;
+		}
+	</style>
+
+	<window apply="org.zkoss.bind.BindComposer"
+			viewModel="@id('vm')@init('OMAC_Webapp.MyViewModel')"
+			border="none">
+
+		<vlayout spacing="20px" style="padding: 30px;">
+
+			<label value="OMAC Ambulance Hour Logger" style="font-size: 24px; font-weight: bold;"/>
+
+			<!-- Log Form -->
+			<div class="form-box">
+				<vlayout>
+					<div class="form-row">
+						<hlayout>
+							<label value="First Name:" width="100px"/>
+							<textbox value="@bind(vm.firstName)" width="200px"/>
+						</hlayout>
+					</div>
+					<div class="form-row">
+						<hlayout>
+							<label value="Last Name:" width="100px"/>
+							<textbox value="@bind(vm.lastName)" width="200px"/>
+						</hlayout>
+					</div>
+					<div class="form-row">
+						<hlayout>
+							<label value="Level:" width="100px"/>
+							<textbox value="@bind(vm.level)" width="200px"/>
+						</hlayout>
+					</div>
+					<div class="form-row">
+						<hlayout>
+							<label value="Date:" width="100px"/>
+							<datebox value="@bind(vm.logDate)" width="200px"/>
+						</hlayout>
+					</div>
+					<div class="form-row">
+						<hlayout>
+							<label value="Hours:" width="100px"/>
+							<doublebox value="@bind(vm.hours)" width="200px"/>
+						</hlayout>
+					</div>
+					<div class="form-row">
+						<hlayout>
+							<label value="Description:" width="100px"/>
+							<textbox value="@bind(vm.description)" width="200px" rows="3"/>
+						</hlayout>
+					</div>
+					<hlayout>
+						<button label="Submit" onClick="@command('submitLog')"/>
+						<button label="Clear" onClick="@command('clearForm')"/>
+					</hlayout>
+				</vlayout>
+			</div>
+
+			<!-- Contribution Graph -->
+			<label value="Hours Logged (Last 52 Weeks)" style="font-size: 16px; font-weight: bold;"/>
+			<html content="@load(vm.graphHtml)"/>
+
+		</vlayout>
+	</window>
+</zk>
