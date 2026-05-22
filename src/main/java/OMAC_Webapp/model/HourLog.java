@@ -1,4 +1,4 @@
-package OMAC_Webapp;
+package OMAC_Webapp.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,9 +12,7 @@ import java.time.LocalDate;
 public class HourLog {
 
     private int id;
-    private String firstName;
-    private String lastName;
-    private String level;
+    private String omacId;
     private LocalDate logDate;
     private double hours;
     private String description;
