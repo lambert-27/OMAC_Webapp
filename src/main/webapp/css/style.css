@@ -3,9 +3,9 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body, .z-window {
-    background: #0a0a0a;
+    background: #f6f8fa;
     font-family: 'DM Sans', sans-serif;
-    color: #f0f0f0;
+    color: #1f2328;
     min-height: 100vh;
 }
 
@@ -16,8 +16,8 @@ body, .z-window {
 }
 
 .sidebar {
-    background: #111111;
-    border-right: 1px solid #1f1f1f;
+    background: #ffffff;
+    border-right: 1px solid #d0d7de;
     display: flex;
     flex-direction: column;
     padding: 0;
@@ -34,7 +34,7 @@ body, .z-window {
 
 .user-panel {
     padding: 24px 20px;
-    border-bottom: 1px solid #1f1f1f;
+    border-bottom: 1px solid #d0d7de;
 }
 
 .user-avatar {
@@ -54,7 +54,7 @@ body, .z-window {
 .user-name {
     font-size: 15px;
     font-weight: 600;
-    color: #ffffff;
+    color: #1f2328;
     margin-bottom: 4px;
 }
 
@@ -68,7 +68,7 @@ body, .z-window {
 
 .user-id {
     font-size: 11px;
-    color: #555;
+    color: #656d76;
     margin-top: 2px;
 }
 
@@ -80,7 +80,7 @@ body, .z-window {
 .nav-label {
     font-size: 10px;
     font-weight: 600;
-    color: #444;
+    color: #656d76;
     text-transform: uppercase;
     letter-spacing: 2px;
     padding: 0 8px;
@@ -95,24 +95,25 @@ body, .z-window {
     border-radius: 6px;
     font-size: 13px;
     font-weight: 500;
-    color: #888;
+    color: #656d76;
     cursor: pointer;
     margin-bottom: 2px;
 }
 
-.nav-item:hover, .nav-item.active {
-    background: #1a1a1a;
-    color: #ffffff;
+.nav-item:hover {
+    background: #f6f8fa;
+    color: #1f2328;
 }
 
 .nav-item.active {
+    background: #f6f8fa;
     border-left: 3px solid #cc0000;
-    color: #ff4444;
+    color: #cc0000;
 }
 
 .mobile-navbar {
     display: none;
-    background: #111111;
+    background: #ffffff;
     border-bottom: 2px solid #cc0000;
     padding: 0 16px;
     height: 60px;
@@ -127,7 +128,7 @@ body, .z-window {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 22px;
     letter-spacing: 3px;
-    color: #ffffff;
+    color: #1f2328;
 }
 
 .mobile-nav-user {
@@ -141,12 +142,13 @@ body, .z-window {
 .main {
     display: flex;
     flex-direction: column;
-    background: #0a0a0a;
+    background: #f6f8fa;
 }
 
 .topbar {
     height: 80px;
-    border-bottom: 1px solid #1a1a1a;
+    background: #ffffff;
+    border-bottom: 1px solid #d0d7de;
     display: flex;
     align-items: center;
     padding: 0 36px;
@@ -157,7 +159,7 @@ body, .z-window {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 26px;
     letter-spacing: 2px;
-    color: #ffffff;
+    color: #1f2328;
     flex: 1;
 }
 
@@ -167,8 +169,8 @@ body, .z-window {
 }
 
 .card {
-    background: #111111;
-    border: 1px solid #1f1f1f;
+    background: #ffffff;
+    border: 1px solid #d0d7de;
     border-radius: 12px;
     padding: 28px;
     margin-bottom: 24px;
@@ -181,7 +183,7 @@ body, .z-window {
     color: #cc0000;
     margin-bottom: 20px;
     padding-bottom: 12px;
-    border-bottom: 1px solid #1f1f1f;
+    border-bottom: 1px solid #d0d7de;
 }
 
 .login-wrap {
@@ -194,21 +196,21 @@ body, .z-window {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 48px;
     letter-spacing: 4px;
-    color: #ffffff;
+    color: #1f2328;
     margin-bottom: 8px;
 }
 
 .login-sub {
     font-size: 13px;
-    color: #555;
+    color: #656d76;
     margin-bottom: 36px;
 }
 
 .z-textbox, .z-doublebox, .z-datebox input, .z-selectbox {
-    background: #1a1a1a !important;
-    border: 1px solid #2a2a2a !important;
+    background: #f6f8fa !important;
+    border: 1px solid #d0d7de !important;
     border-radius: 6px !important;
-    color: #f0f0f0 !important;
+    color: #1f2328 !important;
     padding: 10px 14px !important;
     font-family: 'DM Sans', sans-serif !important;
     font-size: 13px !important;
@@ -224,7 +226,7 @@ body, .z-window {
 .field-label {
     font-size: 11px;
     font-weight: 600;
-    color: #666;
+    color: #656d76;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 6px;
@@ -254,8 +256,8 @@ body, .z-window {
 
 .btn-ghost {
     background: transparent !important;
-    border: 1px solid #2a2a2a !important;
-    color: #888 !important;
+    border: 1px solid #d0d7de !important;
+    color: #656d76 !important;
 }
 
 .btn-ghost:hover {
@@ -265,8 +267,8 @@ body, .z-window {
 }
 
 .graph-card {
-    background: #111111;
-    border: 1px solid #1f1f1f;
+    background: #ffffff;
+    border: 1px solid #d0d7de;
     border-radius: 12px;
     padding: 28px;
     overflow-x: auto;
@@ -274,15 +276,15 @@ body, .z-window {
 
 .divider {
     height: 1px;
-    background: #1f1f1f;
+    background: #d0d7de;
     margin: 20px 0;
 }
 
 .badge {
     display: inline-block;
-    background: #1a0000;
-    color: #ff4444;
-    border: 1px solid #330000;
+    background: #fff0f0;
+    color: #cc0000;
+    border: 1px solid #ffcccc;
     border-radius: 4px;
     font-size: 10px;
     font-weight: 600;
@@ -306,7 +308,7 @@ body, .z-window {
 
 .section-hint {
     font-size: 12px;
-    color: #444;
+    color: #656d76;
     margin-bottom: 20px;
 }
 
@@ -317,6 +319,10 @@ body, .z-window {
     line-height: 1;
 }
 
+.z-window-noborder-content {
+    border: none !important;
+    padding: 0 !important;
+}
 @media (max-width: 768px) {
     .shell { grid-template-columns: 1fr; }
     .sidebar { display: none; }

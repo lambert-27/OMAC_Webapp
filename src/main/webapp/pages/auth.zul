@@ -2,7 +2,7 @@
 <div xmlns:n="native" apply="org.zkoss.bind.BindComposer"
      viewModel="@id('auth')@init('OMAC_Webapp.viewmodel.AuthViewModel')">
 
-    <div visible="@load(!auth.userFound)" style="background:#0a0a0a;min-height:100vh;padding:40px;">
+    <div visible="@load(!auth.userFound)" style="background:#f6f8fa;min-height:100vh;padding:40px;">
         <div class="login-wrap">
             <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:4px;color:#cc0000;margin-bottom:16px;">OMAC AMBULANCE SERVICE</div>
             <div class="login-heading">HOUR TRACKER</div>

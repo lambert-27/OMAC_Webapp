@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<div xmlns:n="native" apply="org.zkoss.bind.BindComposer"
+<div apply="org.zkoss.bind.BindComposer"
      viewModel="@id('graph')@init('OMAC_Webapp.viewmodel.GraphViewModel')">
 
     <div apply="org.zkoss.bind.BindComposer"
@@ -15,6 +15,22 @@
                 <div class="logo-area">
                     <image src="omac.png" style="max-height:60px;max-width:220px;object-fit:contain;"/>
                 </div>
+
+                <div class="user-panel">
+                    <div class="user-avatar">
+                        <label value="@load(graph.displayInitial)"/>
+                    </div>
+                    <div class="user-name">
+                        <label value="@load(graph.displayName)"/>
+                    </div>
+                    <div class="user-level">
+                        <label value="@load(graph.displayLevel)"/>
+                    </div>
+                    <div class="user-id">
+                        <label value="@load(('ID: ').concat(graph.displayId))"/>
+                    </div>
+                </div>
+
                 <div class="nav-section">
                     <div class="nav-label">Menu</div>
                     <div class="nav-item active">&#x23F0; Log Hours</div>
@@ -34,25 +50,25 @@
                     <!-- Overview -->
                     <div class="overview-grid">
                         <div class="card" style="margin-bottom:0;text-align:center;">
-                            <div style="font-size:11px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">This Week</div>
-                            <div class="stat-number" style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:#cc0000;line-height:1;">
+                            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">This Week</div>
+                            <div class="stat-number">
                                 <label value="@load(graph.hoursThisWeek)"/>
                             </div>
-                            <div style="font-size:11px;color:#444;margin-top:6px;">HOURS</div>
+                            <div style="font-size:11px;margin-top:6px;">HOURS</div>
                         </div>
                         <div class="card" style="margin-bottom:0;text-align:center;">
-                            <div style="font-size:11px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">This Month</div>
-                            <div class="stat-number" style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:#cc0000;line-height:1;">
+                            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">This Month</div>
+                            <div class="stat-number">
                                 <label value="@load(graph.hoursThisMonth)"/>
                             </div>
-                            <div style="font-size:11px;color:#444;margin-top:6px;">HOURS</div>
+                            <div style="font-size:11px;margin-top:6px;">HOURS</div>
                         </div>
                         <div class="card" style="margin-bottom:0;text-align:center;">
-                            <div style="font-size:11px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">This Year</div>
-                            <div class="stat-number" style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:#cc0000;line-height:1;">
+                            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">This Year</div>
+                            <div class="stat-number">
                                 <label value="@load(graph.hoursThisYear)"/>
                             </div>
-                            <div style="font-size:11px;color:#444;margin-top:6px;">HOURS</div>
+                            <div style="font-size:11px;margin-top:6px;">HOURS</div>
                         </div>
                     </div>
 
@@ -75,7 +91,7 @@
                             <textbox value="@bind(hourlog.description)" width="100%" rows="3"/>
                         </div>
                         <hlayout spacing="10px">
-                            <button label="Submit" onClick="@command('submitLog', ctx=hourlog)"/>
+                            <button label="Submit" onClick="@command('submitLog')"/>
                             <button label="Clear" onClick="@command('clearForm')" sclass="btn-ghost"/>
                         </hlayout>
                     </div>

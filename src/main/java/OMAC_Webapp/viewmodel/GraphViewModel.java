@@ -24,12 +24,21 @@ public class GraphViewModel {
     private String hoursThisMonth = "0";
     private String hoursThisYear = "0";
 
+    private String displayName;
+    private String displayLevel;
+    private String displayId;
+    private String displayInitial;
+
     private final HourLogDAO hourLogDAO = DAOFactory.getInstance().getHourLogDAO();
 
     @GlobalCommand
-    @NotifyChange({"graphHtml", "hoursThisWeek", "hoursThisMonth", "hoursThisYear"})
-    public void onUserLoggedIn(@BindingParam("omacId") String omacId) {
+    @NotifyChange({"graphHtml", "hoursThisWeek", "hoursThisMonth", "hoursThisYear", "displayName", "displayLevel", "displayId", "displayInitial"})
+    public void onUserLoggedIn(@BindingParam("omacId") String omacId, @BindingParam("currentUser") OMAC_Webapp.model.User currentUser) {
         this.omacId = omacId;
+        this.displayName = currentUser.getFirstName() + " " + currentUser.getLastName();
+        this.displayLevel = currentUser.getLevel();
+        this.displayId = currentUser.getOmacId();
+        this.displayInitial = currentUser.getFirstName().substring(0, 1);
         loadGraph();
         loadTotals();
     }

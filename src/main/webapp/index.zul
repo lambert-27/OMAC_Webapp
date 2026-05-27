@@ -5,7 +5,9 @@
 	<?link rel="stylesheet" type="text/css" href="css/style.css"?>
 
 	<window border="none" width="100%">
-		<include src="fragments/auth.zul"/>
-		<include src="fragments/dashboard.zul"/>
+		<include src="pages/auth.zul"/>
+		<div visible="@load(root.userLoggedIn)">
+			<include src="pages/dashboard.zul"/>
+		</div>
 	</window>
 </zk>
