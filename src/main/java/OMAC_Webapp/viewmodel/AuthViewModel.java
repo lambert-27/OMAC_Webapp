@@ -9,6 +9,7 @@ import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Messagebox;
 
 import java.sql.SQLException;
@@ -42,6 +43,18 @@ public class AuthViewModel {
     );
 
     public List<String> getLevels() { return LEVELS; }
+
+    @Init
+    @NotifyChange({"userFound", "currentUser"})
+    public void init() {
+        User sessionUser = (User) Sessions.getCurrent().getAttribute("currentUser");
+        if (sessionUser != null) {
+            currentUser = sessionUser;
+            omacId = sessionUser.getOmacId();
+            userFound = true;
+            notifyUserLoggedIn();
+        }
+    }
 
     @Command
     @NotifyChange({"currentUser", "userFound"})
@@ -87,9 +100,8 @@ public class AuthViewModel {
     }
 
     private void notifyUserLoggedIn() {
-        Map<String, Object> args = new HashMap<>();
-        args.put("omacId", omacId);
-        args.put("currentUser", currentUser);
-        BindUtils.postGlobalCommand(null, null, "onUserLoggedIn", args);
+        Sessions.getCurrent().setAttribute("omacId", omacId);
+        Sessions.getCurrent().setAttribute("currentUser", currentUser);
+        BindUtils.postGlobalCommand(null, null, "onUserLoggedIn", null);
     }
 }

@@ -2,9 +2,11 @@ package OMAC_Webapp.viewmodel;
 
 import OMAC_Webapp.dao.DAOFactory;
 import OMAC_Webapp.dao.HourLogDAO;
+import OMAC_Webapp.model.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.zkoss.bind.annotation.*;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Messagebox;
 
 import java.sql.SQLException;
@@ -33,8 +35,9 @@ public class GraphViewModel {
 
     @GlobalCommand
     @NotifyChange({"graphHtml", "hoursThisWeek", "hoursThisMonth", "hoursThisYear", "displayName", "displayLevel", "displayId", "displayInitial"})
-    public void onUserLoggedIn(@BindingParam("omacId") String omacId, @BindingParam("currentUser") OMAC_Webapp.model.User currentUser) {
-        this.omacId = omacId;
+    public void onUserLoggedIn() {
+        User currentUser = (User) Sessions.getCurrent().getAttribute("currentUser");
+        this.omacId = (String) Sessions.getCurrent().getAttribute("omacId");
         this.displayName = currentUser.getFirstName() + " " + currentUser.getLastName();
         this.displayLevel = currentUser.getLevel();
         this.displayId = currentUser.getOmacId();

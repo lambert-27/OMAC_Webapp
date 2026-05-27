@@ -3,10 +3,12 @@ package OMAC_Webapp.viewmodel;
 import OMAC_Webapp.dao.DAOFactory;
 import OMAC_Webapp.dao.HourLogDAO;
 import OMAC_Webapp.model.HourLog;
+import OMAC_Webapp.model.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.*;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Messagebox;
 
 import java.sql.SQLException;
@@ -30,12 +32,19 @@ public class HourLogViewModel {
     @Init
     public void init() {
         logDate = new Date();
+        User currentUser = (User) Sessions.getCurrent().getAttribute("currentUser");
+        if (currentUser != null) {
+            this.omacId = currentUser.getOmacId();
+        }
     }
 
     @GlobalCommand
     @NotifyChange({"omacId"})
-    public void onUserLoggedIn(@BindingParam("omacId") String omacId) {
-        this.omacId = omacId;
+    public void onUserLoggedIn() {
+        User currentUser = (User) Sessions.getCurrent().getAttribute("currentUser");
+        if (currentUser != null) {
+            this.omacId = currentUser.getOmacId();
+        }
     }
 
     @Command
