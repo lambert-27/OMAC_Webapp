@@ -1,6 +1,7 @@
 package OMAC_Webapp.viewmodel;
 
-import OMAC_Webapp.constants.TrainingLevelConstants;
+import OMAC_Webapp.constants.TrainingLevels;
+import OMAC_Webapp.constants.UnitLocations;
 import OMAC_Webapp.dao.DAOFactory;
 import OMAC_Webapp.dao.HourLogDAO;
 import OMAC_Webapp.dao.UserDAO;
@@ -31,6 +32,7 @@ public class MyViewModel {
 	private String newFirstName;
 	private String newLastName;
 	private String newLevel;
+	private String newUnitLocation;
 	private String newOmacId;
 	private Integer selectedYear = LocalDate.now().getYear();
 
@@ -98,10 +100,10 @@ public class MyViewModel {
 	}
 
 	@Command
-	@NotifyChange({"showRegister", "currentUser", "userFound", "graphHtml", "hoursThisWeek", "hoursThisMonth", "hoursThisYear"})
+	@NotifyChange({"showRegister", "currentUser", "userFound", "graphHtml", "hoursThisWeek", "hoursThisMonth", "hoursThisYear", "newUnitLocation"})
 	public void registerUser() {
 		try {
-			User user = new User(newOmacId, newFirstName, newLastName, newLevel);
+			User user = new User(newOmacId, newFirstName, newLastName, newLevel, newUnitLocation);
 			userDAO.insert(user);
 			currentUser = user;
 			omacId = newOmacId;
@@ -111,6 +113,7 @@ public class MyViewModel {
 			newFirstName = null;
 			newLastName = null;
 			newLevel = null;
+			newUnitLocation = null;
 			loadGraph();
 		} catch (SQLException e) {
 			Messagebox.show("Failed to register user: " + e.getMessage());
@@ -146,7 +149,11 @@ public class MyViewModel {
 	}
 
 	public java.util.List<String> getLevels() {
-		return TrainingLevelConstants.ALL_LEVELS;
+		return TrainingLevels.ALL_LEVELS;
+	}
+
+	public java.util.List<String> getUnitLocations() {
+		return UnitLocations.ALL_LOCATIONS;
 	}
 
 	public java.util.List<Integer> getYearOptions() {

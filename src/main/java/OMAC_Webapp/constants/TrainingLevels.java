@@ -8,7 +8,7 @@ import java.util.List;
  * Stores the training level labels in one constants class so ViewModels do not
  * duplicate hard-coded dropdown values.
  */
-public final class TrainingLevelConstants {
+public final class TrainingLevels {
 
     public static final String CARDIAC_FIRST_RESPONSE = "CFR - Cardiac First Response";
     public static final String FIRST_AID_RESPONSE = "FAR - First Aid Response";
@@ -26,6 +26,6 @@ public final class TrainingLevelConstants {
             ADVANCED_PARAMEDIC
     ));
 
-    private TrainingLevelConstants() {
+    private TrainingLevels() {
     }
 }

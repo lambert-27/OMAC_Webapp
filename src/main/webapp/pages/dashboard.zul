@@ -42,7 +42,7 @@
             <div class="main">
                 <div class="topbar">
                     <div class="topbar-title">HOUR TRACKER</div>
-                    <div class="badge">OMAC</div>
+                    <div class="badge"><label value="@load(graph.unitBadge)"/></div>
                 </div>
 
                 <div class="content-area">

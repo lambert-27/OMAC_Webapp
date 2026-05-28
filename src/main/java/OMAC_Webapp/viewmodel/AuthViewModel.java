@@ -1,6 +1,7 @@
 package OMAC_Webapp.viewmodel;
 
-import OMAC_Webapp.constants.TrainingLevelConstants;
+import OMAC_Webapp.constants.TrainingLevels;
+import OMAC_Webapp.constants.UnitLocations;
 import OMAC_Webapp.dao.DAOFactory;
 import OMAC_Webapp.dao.UserDAO;
 import OMAC_Webapp.model.User;
@@ -27,11 +28,13 @@ public class AuthViewModel {
     private String newFirstName;
     private String newLastName;
     private String newLevel;
+    private String newUnitLocation;
     private String newOmacId;
 
     private final UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
 
-    public List<String> getLevels() { return TrainingLevelConstants.ALL_LEVELS; }
+    public List<String> getLevels() { return TrainingLevels.ALL_LEVELS; }
+    public List<String> getUnitLocations() { return UnitLocations.ALL_LOCATIONS; }
 
     @Init
     @NotifyChange({"userFound", "currentUser"})
@@ -69,10 +72,10 @@ public class AuthViewModel {
     }
 
     @Command
-    @NotifyChange({"showRegister", "currentUser", "userFound"})
+    @NotifyChange({"showRegister", "currentUser", "userFound", "newUnitLocation"})
     public void registerUser() {
         try {
-            User user = new User(newOmacId, newFirstName, newLastName, newLevel);
+            User user = new User(newOmacId, newFirstName, newLastName, newLevel, newUnitLocation);
             userDAO.insert(user);
             currentUser = user;
             omacId = newOmacId;
@@ -82,6 +85,7 @@ public class AuthViewModel {
             newFirstName = null;
             newLastName = null;
             newLevel = null;
+            newUnitLocation = null;
             notifyUserLoggedIn();
         } catch (SQLException e) {
             Messagebox.show("Failed to register user: " + e.getMessage());

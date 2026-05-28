@@ -43,6 +43,14 @@
                         </template>
                     </selectbox>
                 </div>
+                <div class="field-wrap">
+                    <div class="field-label">Unit Location</div>
+                    <selectbox model="@load(auth.unitLocations)" value="@bind(auth.newUnitLocation)" width="100%">
+                        <template name="model">
+                            <label value="@load(each)"/>
+                        </template>
+                    </selectbox>
+                </div>
                 <button label="Register" onClick="@command('registerUser')" width="100%"/>
             </div>
         </div>

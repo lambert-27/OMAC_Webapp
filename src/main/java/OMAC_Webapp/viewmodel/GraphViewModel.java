@@ -34,11 +34,12 @@ public class GraphViewModel {
     private String displayLevel;
     private String displayId;
     private String displayInitial;
+    private String unitBadge = "OMAC";
 
     private final HourLogDAO hourLogDAO = DAOFactory.getInstance().getHourLogDAO();
 
     @GlobalCommand
-    @NotifyChange({"graphHtml", "hoursThisWeek", "hoursThisMonth", "hoursThisYear", "displayName", "displayLevel", "displayId", "displayInitial"})
+    @NotifyChange({"graphHtml", "hoursThisWeek", "hoursThisMonth", "hoursThisYear", "displayName", "displayLevel", "displayId", "displayInitial", "unitBadge"})
     public void onUserLoggedIn() {
         User currentUser = (User) Sessions.getCurrent().getAttribute("currentUser");
         this.omacId = (String) Sessions.getCurrent().getAttribute("omacId");
@@ -46,6 +47,7 @@ public class GraphViewModel {
         this.displayLevel = currentUser.getLevel();
         this.displayId = currentUser.getOmacId();
         this.displayInitial = currentUser.getFirstName().substring(0, 1);
+        this.unitBadge = buildUnitBadge(currentUser.getUnitLocation());
         loadGraph();
         loadTotals();
     }
@@ -212,5 +214,12 @@ public class GraphViewModel {
         if (hours <= 2)  return "#ff9999";
         if (hours <= 4)  return "#ff4444";
         return "#cc0000";
+    }
+
+    private String buildUnitBadge(String unitLocation) {
+        if (unitLocation == null || unitLocation.trim().isEmpty()) {
+            return "OMAC";
+        }
+        return "OMAC - " + unitLocation;
     }
 }
