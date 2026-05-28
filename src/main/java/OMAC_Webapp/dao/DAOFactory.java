@@ -1,5 +1,10 @@
 package OMAC_Webapp.dao;
 
+/**
+ * DAOFactory uses the Factory design pattern to focus the creation and
+ * access of DAO objects to one Factory, giving the application one place to retrieve shared
+ * data access classes such as UserDAO and HourLogDAO.
+ */
 public class DAOFactory {
 
     private static DAOFactory instance;

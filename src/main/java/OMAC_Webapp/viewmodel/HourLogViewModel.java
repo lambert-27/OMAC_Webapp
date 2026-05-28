@@ -18,6 +18,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * HourLogViewModel participates in the Observer/Event Bus flow by listening
+ * for login events and publishing an update event after hours are saved.
+ */
 @Getter
 @Setter
 public class HourLogViewModel {

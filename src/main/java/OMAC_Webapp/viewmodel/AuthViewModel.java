@@ -99,6 +99,10 @@ public class AuthViewModel {
         }
     }
 
+    /**
+     * Publishes a login event through ZK's global command event bus so other
+     * ViewModels can observe and react without being directly coupled to auth.
+     */
     private void notifyUserLoggedIn() {
         Sessions.getCurrent().setAttribute("omacId", omacId);
         Sessions.getCurrent().setAttribute("currentUser", currentUser);

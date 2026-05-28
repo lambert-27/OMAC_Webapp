@@ -7,6 +7,10 @@ import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.bind.BindUtils;
 
+/**
+ * RootViewModel observes global login events so application-level state can
+ * update when AuthViewModel publishes a successful login.
+ */
 @Getter
 public class RootViewModel {
 

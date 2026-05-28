@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * GraphViewModel uses ZK global commands as an Observer,
+ * listening for user-login and hours-updated events from other ViewModels.
+ */
 @Getter
 @Setter
 public class GraphViewModel {
@@ -62,10 +66,9 @@ public class GraphViewModel {
 
     private void loadGraph() {
         try {
-            LocalDate from = LocalDate.of(selectedYear, 1, 1);
-            LocalDate to = selectedYear.equals(LocalDate.now().getYear())
-                    ? LocalDate.now()
-                    : LocalDate.of(selectedYear, 12, 31);
+            boolean isCurrentYear = selectedYear.equals(LocalDate.now().getYear());
+            LocalDate from = isCurrentYear ? LocalDate.now().minusWeeks(52) : LocalDate.of(selectedYear, 1, 1);
+            LocalDate to = isCurrentYear ? LocalDate.now() : LocalDate.of(selectedYear, 12, 31);
             hoursPerDay = hourLogDAO.getHoursPerDay(omacId, from, to);
         } catch (SQLException e) {
             Messagebox.show("Failed to load graph: " + e.getMessage());
@@ -102,31 +105,57 @@ public class GraphViewModel {
     public String getGraphHtml() {
         if (hoursPerDay == null) return "";
 
-        LocalDate start = LocalDate.of(selectedYear, 1, 1);
-        LocalDate end = LocalDate.of(selectedYear, 12, 31);
+        boolean isCurrentYear = selectedYear.equals(LocalDate.now().getYear());
         LocalDate today = LocalDate.now();
+        LocalDate start = isCurrentYear ? today.minusWeeks(52) : LocalDate.of(selectedYear, 1, 1);
+        LocalDate end = isCurrentYear ? today : LocalDate.of(selectedYear, 12, 31);
 
         LocalDate colStart = start;
         while (colStart.getDayOfWeek().getValue() != 1) {
             colStart = colStart.minusDays(1);
         }
 
-        List<LocalDate> colStarts = new ArrayList<>();
+        java.util.List<LocalDate> colStarts = new java.util.ArrayList<>();
         LocalDate col = colStart;
         while (!col.isAfter(end)) {
             colStarts.add(col);
             col = col.plusWeeks(1);
         }
 
+        double totalHours = hoursPerDay.values().stream().mapToDouble(Double::doubleValue).sum();
+
         StringBuilder sb = new StringBuilder();
+
+        // Summary
+        sb.append("<div style='font-size:13px;color:var(--text-secondary);margin-bottom:12px;'>")
+                .append(String.format("%.0f", totalHours))
+                .append(" hours logged")
+                .append(isCurrentYear ? " in the last year" : " in " + selectedYear)
+                .append("</div>");
+
+        sb.append("<div style='display:flex;flex-direction:row;gap:4px;'>");
+
+        // Day labels column
+        sb.append("<div style='display:flex;flex-direction:column;gap:3px;margin-right:4px;padding-top:18px;'>");
+        sb.append("<div style='height:13px;font-size:9px;color:var(--text-secondary);line-height:13px;'></div>");
+        sb.append("<div style='height:13px;font-size:9px;color:var(--text-secondary);line-height:13px;'>Mon</div>");
+        sb.append("<div style='height:13px;font-size:9px;color:var(--text-secondary);line-height:13px;'></div>");
+        sb.append("<div style='height:13px;font-size:9px;color:var(--text-secondary);line-height:13px;'>Wed</div>");
+        sb.append("<div style='height:13px;font-size:9px;color:var(--text-secondary);line-height:13px;'></div>");
+        sb.append("<div style='height:13px;font-size:9px;color:var(--text-secondary);line-height:13px;'>Fri</div>");
+        sb.append("<div style='height:13px;'></div>");
+        sb.append("</div>");
+
+        // Graph columns wrapper
         sb.append("<div style='display:flex;flex-direction:column;gap:4px;'>");
 
-        sb.append("<div style='display:flex;flex-direction:row;gap:3px;margin-bottom:4px;'>");
+        // Month labels row
+        sb.append("<div style='display:flex;flex-direction:row;gap:3px;'>");
         java.time.Month lastMonth = null;
         for (LocalDate c : colStarts) {
             java.time.Month colMonth = c.getMonth();
             if (!colMonth.equals(lastMonth)) {
-                sb.append("<div style='min-width:13px;font-size:10px;color:#555;font-family:DM Sans,sans-serif;letter-spacing:1px;'>")
+                sb.append("<div style='min-width:13px;font-size:9px;color:var(--text-secondary);white-space:nowrap;'>")
                         .append(colMonth.getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.ENGLISH))
                         .append("</div>");
                 lastMonth = colMonth;
@@ -136,12 +165,13 @@ public class GraphViewModel {
         }
         sb.append("</div>");
 
+        // Grid
         sb.append("<div style='display:flex;flex-direction:row;gap:3px;'>");
         lastMonth = null;
         for (LocalDate c : colStarts) {
             java.time.Month colMonth = c.getMonth();
             String borderLeft = !colMonth.equals(lastMonth) && lastMonth != null
-                    ? "border-left:1px solid #2a2a2a;padding-left:4px;" : "";
+                    ? "border-left:1px solid var(--border);padding-left:4px;" : "";
             lastMonth = colMonth;
 
             sb.append("<div style='display:flex;flex-direction:column;gap:3px;").append(borderLeft).append("'>");
@@ -160,7 +190,19 @@ public class GraphViewModel {
             }
             sb.append("</div>");
         }
-        sb.append("</div></div>");
+        sb.append("</div>");
+        sb.append("</div>");
+        sb.append("</div>");
+
+        // Legend
+        sb.append("<div style='display:flex;align-items:center;gap:6px;margin-top:8px;font-size:10px;color:var(--text-secondary);justify-content:flex-end;'>")
+                .append("Less")
+                .append("<div style='width:13px;height:13px;border-radius:2px;background:#e0e0e0;'></div>")
+                .append("<div style='width:13px;height:13px;border-radius:2px;background:#ff9999;'></div>")
+                .append("<div style='width:13px;height:13px;border-radius:2px;background:#ff4444;'></div>")
+                .append("<div style='width:13px;height:13px;border-radius:2px;background:#cc0000;'></div>")
+                .append("More")
+                .append("</div>");
 
         return sb.toString();
     }

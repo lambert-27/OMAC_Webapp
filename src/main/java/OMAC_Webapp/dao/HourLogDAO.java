@@ -7,6 +7,10 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * DAO classes use the Data Access Object pattern to encapsulate database
+ * operations and keep persistence logic separate from application logic.
+ */
 public class HourLogDAO {
 
     public void insert(HourLog log) throws SQLException {
