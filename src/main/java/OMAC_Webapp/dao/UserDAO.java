@@ -19,6 +19,19 @@ public class UserDAO {
         }
     }
 
+    public void update(User user) throws SQLException {
+        String sql = "UPDATE user SET first_name = ?, last_name = ?, level = ?, unit_location = ? WHERE omac_id = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setString(3, user.getLevel());
+            ps.setString(4, user.getUnitLocation());
+            ps.setString(5, user.getOmacId());
+            ps.executeUpdate();
+        }
+    }
+
     public User findById(String omacId) throws SQLException {
         String sql = "SELECT * FROM user WHERE omac_id = ?";
         try (Connection conn = DBConnection.getInstance().getConnection();

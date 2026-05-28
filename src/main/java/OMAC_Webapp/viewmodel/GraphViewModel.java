@@ -23,9 +23,13 @@ import java.util.Map;
 @Setter
 public class GraphViewModel {
 
+    private static final String LOG_HOURS_PAGE = "logHours";
+    private static final String MY_DETAILS_PAGE = "myDetails";
+
     private String omacId;
     private Map<LocalDate, Double> hoursPerDay;
     private Integer selectedYear = LocalDate.now().getYear();
+    private String activePage = LOG_HOURS_PAGE;
     private String hoursThisWeek = "0";
     private String hoursThisMonth = "0";
     private String hoursThisYear = "0";
@@ -41,15 +45,15 @@ public class GraphViewModel {
     @GlobalCommand
     @NotifyChange({"graphHtml", "hoursThisWeek", "hoursThisMonth", "hoursThisYear", "displayName", "displayLevel", "displayId", "displayInitial", "unitBadge"})
     public void onUserLoggedIn() {
-        User currentUser = (User) Sessions.getCurrent().getAttribute("currentUser");
-        this.omacId = (String) Sessions.getCurrent().getAttribute("omacId");
-        this.displayName = currentUser.getFirstName() + " " + currentUser.getLastName();
-        this.displayLevel = currentUser.getLevel();
-        this.displayId = currentUser.getOmacId();
-        this.displayInitial = currentUser.getFirstName().substring(0, 1);
-        this.unitBadge = buildUnitBadge(currentUser.getUnitLocation());
+        loadDisplayUser();
         loadGraph();
         loadTotals();
+    }
+
+    @GlobalCommand
+    @NotifyChange({"displayName", "displayLevel", "displayId", "displayInitial", "unitBadge"})
+    public void onUserDetailsUpdated() {
+        loadDisplayUser();
     }
 
     @GlobalCommand
@@ -60,6 +64,21 @@ public class GraphViewModel {
     }
 
     @Command
+    @GlobalCommand
+    @NotifyChange({"logHoursActive", "myDetailsActive", "logHoursNavClass", "myDetailsNavClass", "pageTitle"})
+    public void showLogHours() {
+        activePage = LOG_HOURS_PAGE;
+    }
+
+    @Command
+    @GlobalCommand
+    @NotifyChange({"logHoursActive", "myDetailsActive", "logHoursNavClass", "myDetailsNavClass", "pageTitle"})
+    public void showMyDetails() {
+        activePage = MY_DETAILS_PAGE;
+    }
+
+    @Command
+    @GlobalCommand
     @NotifyChange({"graphHtml"})
     public void changeYear(@BindingParam("year") Integer year) {
         if (year != null) selectedYear = year;
@@ -102,6 +121,26 @@ public class GraphViewModel {
 
     public int getSelectedYearIndex() {
         return getYearOptions().indexOf(selectedYear);
+    }
+
+    public boolean isLogHoursActive() {
+        return LOG_HOURS_PAGE.equals(activePage);
+    }
+
+    public boolean isMyDetailsActive() {
+        return MY_DETAILS_PAGE.equals(activePage);
+    }
+
+    public String getLogHoursNavClass() {
+        return isLogHoursActive() ? "nav-item active" : "nav-item";
+    }
+
+    public String getMyDetailsNavClass() {
+        return isMyDetailsActive() ? "nav-item active" : "nav-item";
+    }
+
+    public String getPageTitle() {
+        return isMyDetailsActive() ? "MY DETAILS" : "HOUR TRACKER";
     }
 
     public String getGraphHtml() {
@@ -221,5 +260,27 @@ public class GraphViewModel {
             return "OMAC";
         }
         return "OMAC - " + unitLocation;
+    }
+
+    private void loadDisplayUser() {
+        User currentUser = (User) Sessions.getCurrent().getAttribute("currentUser");
+        if (currentUser == null) {
+            return;
+        }
+
+        String sessionOmacId = (String) Sessions.getCurrent().getAttribute("omacId");
+        this.omacId = sessionOmacId != null ? sessionOmacId : currentUser.getOmacId();
+        this.displayName = currentUser.getFirstName() + " " + currentUser.getLastName();
+        this.displayLevel = currentUser.getLevel();
+        this.displayId = currentUser.getOmacId();
+        this.displayInitial = getInitial(currentUser.getFirstName());
+        this.unitBadge = buildUnitBadge(currentUser.getUnitLocation());
+    }
+
+    private String getInitial(String firstName) {
+        if (firstName == null || firstName.trim().isEmpty()) {
+            return "";
+        }
+        return firstName.substring(0, 1);
     }
 }
