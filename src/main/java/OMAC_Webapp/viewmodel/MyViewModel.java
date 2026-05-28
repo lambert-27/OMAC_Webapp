@@ -1,5 +1,6 @@
 package OMAC_Webapp.viewmodel;
 
+import OMAC_Webapp.constants.TrainingLevelConstants;
 import OMAC_Webapp.dao.DAOFactory;
 import OMAC_Webapp.dao.HourLogDAO;
 import OMAC_Webapp.dao.UserDAO;
@@ -144,17 +145,8 @@ public class MyViewModel {
 		}
 	}
 
-	private static final java.util.List<String> LEVELS = java.util.Arrays.asList(
-			"CFR - Cardiac First Response",
-			"FAR - First Aid Response",
-			"EFR - Emergency First Responder",
-			"EMT - Emergency Medical Technician",
-			"P - Paramedic",
-			"AP - Advanced Paramedic"
-	);
-
 	public java.util.List<String> getLevels() {
-		return LEVELS;
+		return TrainingLevelConstants.ALL_LEVELS;
 	}
 
 	public java.util.List<Integer> getYearOptions() {

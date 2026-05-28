@@ -1,5 +1,6 @@
 package OMAC_Webapp.viewmodel;
 
+import OMAC_Webapp.constants.TrainingLevelConstants;
 import OMAC_Webapp.dao.DAOFactory;
 import OMAC_Webapp.dao.UserDAO;
 import OMAC_Webapp.model.User;
@@ -13,10 +14,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Messagebox;
 
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -33,16 +31,7 @@ public class AuthViewModel {
 
     private final UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
 
-    private static final List<String> LEVELS = Arrays.asList(
-            "CFR - Cardiac First Response",
-            "FAR - First Aid Response",
-            "EFR - Emergency First Responder",
-            "EMT - Emergency Medical Technician",
-            "P - Paramedic",
-            "AP - Advanced Paramedic"
-    );
-
-    public List<String> getLevels() { return LEVELS; }
+    public List<String> getLevels() { return TrainingLevelConstants.ALL_LEVELS; }
 
     @Init
     @NotifyChange({"userFound", "currentUser"})
