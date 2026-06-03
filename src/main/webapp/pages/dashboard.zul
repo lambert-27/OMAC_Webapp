@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div apply="org.zkoss.bind.BindComposer"
+     viewModel="@id('graph')@init('OMAC_Webapp.viewmodel.GraphViewModel')">
+
+    <div apply="org.zkoss.bind.BindComposer"
+         viewModel="@id('hourlog')@init('OMAC_Webapp.viewmodel.HourLogViewModel')">
+
+        <div class="mobile-navbar">
+            <div class="mobile-nav-logo">OMAC</div>
+            <div class="mobile-nav-user"><label value="@load(graph.unitBadge)"/></div>
+        </div>
+
+        <div class="shell">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="logo-area">
+                    <image src="omac.png" style="max-height:60px;max-width:220px;object-fit:contain;"/>
+                </div>
+
+                <div class="user-panel">
+                    <div class="user-avatar">
+                        <label value="@load(graph.displayInitial)"/>
+                    </div>
+                    <div class="user-name">
+                        <label value="@load(graph.displayName)"/>
+                    </div>
+                    <div class="user-level">
+                        <label value="@load(graph.displayLevel)"/>
+                    </div>
+                    <div class="user-id">
+                        <label value="@load(('ID: ').concat(graph.displayId))"/>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-label">Menu</div>
+                    <div sclass="@load(graph.logHoursNavClass)" onClick="@global-command('showLogHours')">&#x23F0; Log Hours</div>
+                    <div sclass="@load(graph.myDetailsNavClass)" onClick="@global-command('showMyDetails')">&#x1F464; My Details</div>
+                </div>
+            </div>
+
+            <!-- Main -->
+            <div class="main">
+                <div class="topbar">
+                    <div class="topbar-title"><label value="@load(graph.pageTitle)"/></div>
+                    <div class="badge"><label value="@load(graph.unitBadge)"/></div>
+                </div>
+
+                <div class="content-area">
+
+                    <div visible="@load(graph.logHoursActive)">
+                        <!-- Overview -->
+                        <div class="overview-grid">
+                            <div class="card" style="margin-bottom:0;text-align:center;">
+                                <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">This Week</div>
+                                <div class="stat-number">
+                                    <label value="@load(graph.hoursThisWeek)"/>
+                                </div>
+                                <div style="font-size:11px;margin-top:6px;">HOURS</div>
+                            </div>
+                            <div class="card" style="margin-bottom:0;text-align:center;">
+                                <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">This Month</div>
+                                <div class="stat-number">
+                                    <label value="@load(graph.hoursThisMonth)"/>
+                                </div>
+                                <div style="font-size:11px;margin-top:6px;">HOURS</div>
+                            </div>
+                            <div class="card" style="margin-bottom:0;text-align:center;">
+                                <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">This Year</div>
+                                <div class="stat-number">
+                                    <label value="@load(graph.hoursThisYear)"/>
+                                </div>
+                                <div style="font-size:11px;margin-top:6px;">HOURS</div>
+                            </div>
+                        </div>
+
+                        <!-- Log Hours Card -->
+                        <div class="card">
+                            <div class="card-title">LOG HOURS</div>
+                            <div class="section-hint">Record your service hours below</div>
+                            <div class="two-col">
+                                <div class="field-wrap">
+                                    <div class="field-label">Date</div>
+                                    <datebox value="@bind(hourlog.logDate)" width="100%"/>
+                                </div>
+                                <div class="field-wrap">
+                                    <div class="field-label">Hours</div>
+                                    <doublebox value="@bind(hourlog.hours)" width="100%"/>
+                                </div>
+                            </div>
+                            <div class="field-wrap">
+                                <div class="field-label">Description</div>
+                                <textbox value="@bind(hourlog.description)" width="100%" rows="3"/>
+                            </div>
+                            <hlayout spacing="10px">
+                                <button label="Submit" onClick="@command('submitLog')"/>
+                                <button label="Clear" onClick="@command('clearForm')" sclass="btn-ghost"/>
+                            </hlayout>
+                        </div>
+
+                        <!-- Graph Card -->
+                        <div class="graph-card">
+                            <hlayout style="align-items:center;margin-bottom:20px;">
+                                <div class="card-title" style="margin-bottom:0;border-bottom:none;flex:1;">HOURS</div>
+                                <selectbox model="@load(graph.yearOptions)" selectedIndex="@load(graph.selectedYearIndex)" width="100px"
+                                           onSelect="@global-command('changeYear', year=self.model.getElementAt(self.selectedIndex))">
+                                    <template name="model">
+                                        <label value="@load(each)"/>
+                                    </template>
+                                </selectbox>
+                            </hlayout>
+                            <html content="@load(graph.graphHtml)"/>
+                        </div>
+                    </div>
+
+                    <div visible="@load(graph.myDetailsActive)">
+                        <div apply="org.zkoss.bind.BindComposer"
+                             viewModel="@id('details')@init('OMAC_Webapp.viewmodel.UserDetailsViewModel')"
+                             class="card">
+                            <div class="card-title">MY DETAILS</div>
+                            <div class="section-hint">View and update your stored user details</div>
+
+                            <div class="field-wrap">
+                                <div class="field-label">OMAC ID</div>
+                                <textbox value="@load(details.omacId)" width="100%" readonly="true"/>
+                            </div>
+
+                            <div class="two-col">
+                                <div class="field-wrap">
+                                    <div class="field-label">First Name</div>
+                                    <textbox value="@bind(details.firstName)" width="100%"/>
+                                </div>
+                                <div class="field-wrap">
+                                    <div class="field-label">Last Name</div>
+                                    <textbox value="@bind(details.lastName)" width="100%"/>
+                                </div>
+                            </div>
+
+                            <div class="field-wrap">
+                                <div class="field-label">Level</div>
+                                <selectbox model="@load(details.levels)" value="@bind(details.level)" width="100%">
+                                    <template name="model">
+                                        <label value="@load(each)"/>
+                                    </template>
+                                </selectbox>
+                            </div>
+
+                            <div class="field-wrap">
+                                <div class="field-label">Unit Location</div>
+                                <selectbox model="@load(details.unitLocations)" value="@bind(details.unitLocation)" width="100%">
+                                    <template name="model">
+                                        <label value="@load(each)"/>
+                                    </template>
+                                </selectbox>
+                            </div>
+
+                            <hlayout spacing="10px">
+                                <button label="Save Details" onClick="@command('saveDetails')"/>
+                                <button label="Reset" onClick="@command('resetDetails')" sclass="btn-ghost"/>
+                            </hlayout>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

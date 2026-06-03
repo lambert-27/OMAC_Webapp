@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page title="OMAC Hour Logger"?>
+<zk>
+	<?link rel="shortcut icon" type="image/x-icon" href="favicon.ico"?>
+	<?link rel="stylesheet" type="text/css" href="css/style.css"?>
+
+	<window border="none" width="100%">
+		<include src="pages/auth.zul"/>
+		<div visible="@load(root.userLoggedIn)">
+			<include src="pages/dashboard.zul"/>
+		</div>
+	</window>
+</zk>

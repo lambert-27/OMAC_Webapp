@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div xmlns:n="native" apply="org.zkoss.bind.BindComposer"
+     viewModel="@id('auth')@init('OMAC_Webapp.viewmodel.AuthViewModel')">
+
+    <div visible="@load(!auth.userFound)" style="background:#f6f8fa;min-height:100vh;padding:40px;">
+        <div class="login-wrap">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:4px;color:#cc0000;margin-bottom:16px;">OMAC AMBULANCE SERVICE</div>
+            <div class="login-heading">HOUR TRACKER</div>
+            <div class="login-sub">Sign in with your OMAC ID to continue</div>
+
+            <div class="card">
+                <div class="field-wrap">
+                    <div class="field-label">OMAC ID</div>
+                    <textbox value="@bind(auth.omacId)" width="100%"/>
+                </div>
+                <button label="Sign In" onClick="@command('lookupUser')" width="100%"/>
+                <div class="divider"/>
+                <div style="font-size:12px;color:#555;margin-bottom:12px;">Don't have an account?</div>
+                <button label="Create Account" onClick="@command('toggleRegister')" sclass="btn-ghost" width="100%"/>
+            </div>
+
+            <div class="card" visible="@load(auth.showRegister)">
+                <div class="card-title">NEW ACCOUNT</div>
+                <div class="two-col">
+                    <div class="field-wrap">
+                        <div class="field-label">First Name</div>
+                        <textbox value="@bind(auth.newFirstName)" width="100%"/>
+                    </div>
+                    <div class="field-wrap">
+                        <div class="field-label">Last Name</div>
+                        <textbox value="@bind(auth.newLastName)" width="100%"/>
+                    </div>
+                </div>
+                <div class="field-wrap">
+                    <div class="field-label">OMAC ID</div>
+                    <textbox value="@bind(auth.newOmacId)" width="100%"/>
+                </div>
+                <div class="field-wrap">
+                    <div class="field-label">Level</div>
+                    <selectbox model="@load(auth.levels)" value="@bind(auth.newLevel)" width="100%">
+                        <template name="model">
+                            <label value="@load(each)"/>
+                        </template>
+                    </selectbox>
+                </div>
+                <div class="field-wrap">
+                    <div class="field-label">Unit Location</div>
+                    <selectbox model="@load(auth.unitLocations)" value="@bind(auth.newUnitLocation)" width="100%">
+                        <template name="model">
+                            <label value="@load(each)"/>
+                        </template>
+                    </selectbox>
+                </div>
+                <button label="Register" onClick="@command('registerUser')" width="100%"/>
+            </div>
+        </div>
+    </div>
+
+</div>
