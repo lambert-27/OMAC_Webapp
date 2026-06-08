@@ -16,6 +16,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Messagebox;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,25 +38,41 @@ public class UserDetailsViewModel {
     public List<String> getLevels() { return TrainingLevels.ALL_LEVELS; }
     public List<String> getUnitLocations() { return UnitLocations.ALL_LOCATIONS; }
 
+    public int getLevelIndex() {
+        return indexOf(level, getLevels());
+    }
+
+    public void setLevelIndex(int levelIndex) {
+        level = valueAt(levelIndex, getLevels());
+    }
+
+    public int getUnitLocationIndex() {
+        return indexOf(unitLocation, getUnitLocations());
+    }
+
+    public void setUnitLocationIndex(int unitLocationIndex) {
+        unitLocation = valueAt(unitLocationIndex, getUnitLocations());
+    }
+
     @Init
     public void init() {
         loadCurrentUser();
     }
 
     @GlobalCommand
-    @NotifyChange({"omacId", "firstName", "lastName", "level", "unitLocation"})
+    @NotifyChange({"omacId", "firstName", "lastName", "level", "unitLocation", "levelIndex", "unitLocationIndex"})
     public void onUserLoggedIn() {
         loadCurrentUser();
     }
 
     @Command
-    @NotifyChange({"omacId", "firstName", "lastName", "level", "unitLocation"})
+    @NotifyChange({"omacId", "firstName", "lastName", "level", "unitLocation", "levelIndex", "unitLocationIndex"})
     public void resetDetails() {
         loadCurrentUser();
     }
 
     @Command
-    @NotifyChange({"firstName", "lastName", "level", "unitLocation"})
+    @NotifyChange({"firstName", "lastName", "level", "unitLocation", "levelIndex", "unitLocationIndex"})
     public void saveDetails() {
         if (isBlank(omacId)) {
             Messagebox.show("Please log in before updating your details.");
@@ -68,9 +85,21 @@ public class UserDetailsViewModel {
 
         User updatedUser = new User(omacId, firstName, lastName, level, unitLocation);
         try {
-            userDAO.update(updatedUser);
-            Sessions.getCurrent().setAttribute("currentUser", updatedUser);
-            BindUtils.postGlobalCommand(null, null, "onUserDetailsUpdated", null);
+            int updatedRows = userDAO.update(updatedUser);
+            if (updatedRows == 0) {
+                Messagebox.show("No matching user found to update.");
+                return;
+            }
+
+            User savedUser = userDAO.findById(omacId);
+            if (savedUser == null) {
+                Messagebox.show("Details were saved, but the updated user could not be reloaded.");
+                return;
+            }
+
+            Sessions.getCurrent().setAttribute("currentUser", savedUser);
+            loadCurrentUser();
+            BindUtils.postGlobalCommand(null, null, "onUserDetailsUpdated", Collections.emptyMap());
             Messagebox.show("Details updated successfully.");
         } catch (SQLException e) {
             Messagebox.show("Failed to update details: " + e.getMessage());
@@ -92,5 +121,13 @@ public class UserDetailsViewModel {
 
     private boolean isBlank(String value) {
         return value == null || value.trim().isEmpty();
+    }
+
+    private int indexOf(String value, List<String> options) {
+        return value == null ? -1 : options.indexOf(value);
+    }
+
+    private String valueAt(int index, List<String> options) {
+        return index >= 0 && index < options.size() ? options.get(index) : null;
     }
 }

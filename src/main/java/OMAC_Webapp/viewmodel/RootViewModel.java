@@ -32,6 +32,12 @@ public class RootViewModel {
         userLoggedIn = true;
     }
 
+    @GlobalCommand
+    @NotifyChange({"currentUser"})
+    public void onUserDetailsUpdated() {
+        currentUser = (User) Sessions.getCurrent().getAttribute("currentUser");
+    }
+
     @Command
     @NotifyChange({"darkMode", "themeClass"})
     public void toggleDark() {

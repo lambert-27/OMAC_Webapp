@@ -19,7 +19,7 @@ public class UserDAO {
         }
     }
 
-    public void update(User user) throws SQLException {
+    public int update(User user) throws SQLException {
         String sql = "UPDATE user SET first_name = ?, last_name = ?, level = ?, unit_location = ? WHERE omac_id = ?";
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -28,7 +28,7 @@ public class UserDAO {
             ps.setString(3, user.getLevel());
             ps.setString(4, user.getUnitLocation());
             ps.setString(5, user.getOmacId());
-            ps.executeUpdate();
+            return ps.executeUpdate();
         }
     }
 
