@@ -1,10 +1,13 @@
 package OMAC_Webapp.dao;
 
 import OMAC_Webapp.model.User;
+import OMAC_Webapp.util.OmacIdGenerator;
 
 import java.sql.*;
 
 public class UserDAO {
+
+    private static final int ID_GENERATION_ATTEMPTS = 100;
 
     public void insert(User user) throws SQLException {
         String sql = "INSERT INTO user (omac_id, first_name, last_name, level, unit_location) VALUES (?, ?, ?, ?, ?)";
@@ -17,6 +20,22 @@ public class UserDAO {
             ps.setString(5, user.getUnitLocation());
             ps.executeUpdate();
         }
+    }
+
+    public User insertWithGeneratedOmacId(String firstName, String lastName, String level, String unitLocation) throws SQLException {
+        for (int attempt = 0; attempt < ID_GENERATION_ATTEMPTS; attempt++) {
+            User user = new User(OmacIdGenerator.generate(), firstName, lastName, level, unitLocation);
+            try {
+                insert(user);
+                return user;
+            } catch (SQLIntegrityConstraintViolationException e) {
+                if (!isDuplicateKey(e)) {
+                    throw e;
+                }
+            }
+        }
+
+        throw new SQLException("Unable to generate a unique OMAC ID. Please try again.");
     }
 
     public int update(User user) throws SQLException {
@@ -49,5 +68,9 @@ public class UserDAO {
             }
         }
         return null;
+    }
+
+    private boolean isDuplicateKey(SQLIntegrityConstraintViolationException e) {
+        return "23000".equals(e.getSQLState()) || e.getErrorCode() == 1062;
     }
 }

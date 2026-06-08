@@ -31,10 +31,7 @@
                         <textbox value="@bind(auth.newLastName)" width="100%"/>
                     </div>
                 </div>
-                <div class="field-wrap">
-                    <div class="field-label">OMAC ID</div>
-                    <textbox value="@bind(auth.newOmacId)" width="100%"/>
-                </div>
+                <div class="section-hint">Your OMAC ID will be generated automatically.</div>
                 <div class="field-wrap">
                     <div class="field-label">Level</div>
                     <selectbox model="@load(auth.levels)" value="@bind(auth.newLevel)" width="100%">

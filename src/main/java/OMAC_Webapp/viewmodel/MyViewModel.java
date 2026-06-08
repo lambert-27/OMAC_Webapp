@@ -33,7 +33,6 @@ public class MyViewModel {
 	private String newLastName;
 	private String newLevel;
 	private String newUnitLocation;
-	private String newOmacId;
 	private Integer selectedYear = LocalDate.now().getYear();
 
 	private double hoursThisWeek;
@@ -100,16 +99,14 @@ public class MyViewModel {
 	}
 
 	@Command
-	@NotifyChange({"showRegister", "currentUser", "userFound", "graphHtml", "hoursThisWeek", "hoursThisMonth", "hoursThisYear", "newUnitLocation"})
+	@NotifyChange({"showRegister", "currentUser", "userFound", "omacId", "graphHtml", "hoursThisWeek", "hoursThisMonth", "hoursThisYear", "newFirstName", "newLastName", "newLevel", "newUnitLocation"})
 	public void registerUser() {
 		try {
-			User user = new User(newOmacId, newFirstName, newLastName, newLevel, newUnitLocation);
-			userDAO.insert(user);
+			User user = userDAO.insertWithGeneratedOmacId(newFirstName, newLastName, newLevel, newUnitLocation);
 			currentUser = user;
-			omacId = newOmacId;
+			omacId = user.getOmacId();
 			userFound = true;
 			showRegister = false;
-			newOmacId = null;
 			newFirstName = null;
 			newLastName = null;
 			newLevel = null;

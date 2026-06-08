@@ -16,6 +16,7 @@ import org.zkoss.zul.Messagebox;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 
 @Getter
 @Setter
@@ -29,7 +30,6 @@ public class AuthViewModel {
     private String newLastName;
     private String newLevel;
     private String newUnitLocation;
-    private String newOmacId;
 
     private final UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
 
@@ -49,8 +49,9 @@ public class AuthViewModel {
     }
 
     @Command
-    @NotifyChange({"currentUser", "userFound"})
+    @NotifyChange({"omacId", "currentUser", "userFound"})
     public void lookupUser() {
+        omacId = normalizeOmacId(omacId);
         try {
             currentUser = userDAO.findById(omacId);
             if (currentUser == null) {
@@ -72,16 +73,14 @@ public class AuthViewModel {
     }
 
     @Command
-    @NotifyChange({"showRegister", "currentUser", "userFound", "newUnitLocation"})
+    @NotifyChange({"showRegister", "currentUser", "userFound", "omacId", "newFirstName", "newLastName", "newLevel", "newUnitLocation"})
     public void registerUser() {
         try {
-            User user = new User(newOmacId, newFirstName, newLastName, newLevel, newUnitLocation);
-            userDAO.insert(user);
+            User user = userDAO.insertWithGeneratedOmacId(newFirstName, newLastName, newLevel, newUnitLocation);
             currentUser = user;
-            omacId = newOmacId;
+            omacId = user.getOmacId();
             userFound = true;
             showRegister = false;
-            newOmacId = null;
             newFirstName = null;
             newLastName = null;
             newLevel = null;
@@ -100,5 +99,9 @@ public class AuthViewModel {
         Sessions.getCurrent().setAttribute("omacId", omacId);
         Sessions.getCurrent().setAttribute("currentUser", currentUser);
         BindUtils.postGlobalCommand(null, null, "onUserLoggedIn", null);
+    }
+
+    private String normalizeOmacId(String value) {
+        return value == null ? null : value.trim().toUpperCase(Locale.ROOT);
     }
 }
