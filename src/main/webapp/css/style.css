@@ -111,6 +111,20 @@ body, .z-window {
     color: #cc0000;
 }
 
+.logout-section {
+    border-top: 1px solid #d0d7de;
+    padding: 14px 12px 18px;
+}
+
+.logout-link {
+    color: #8c1d18;
+}
+
+.logout-link:hover {
+    background: #fff0f0;
+    color: #cc0000;
+}
+
 .mobile-navbar {
     display: none;
     background: #ffffff;
@@ -137,6 +151,17 @@ body, .z-window {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+.mobile-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mobile-logout-btn {
+    padding: 7px 10px !important;
+    font-size: 11px !important;
 }
 
 .main {
@@ -291,6 +316,11 @@ body, .z-window {
     text-transform: uppercase;
     letter-spacing: 1px;
     padding: 3px 8px;
+}
+
+.logout-button {
+    padding: 8px 14px !important;
+    white-space: nowrap;
 }
 
 .two-col {

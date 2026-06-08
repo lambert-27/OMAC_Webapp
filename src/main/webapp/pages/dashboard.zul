@@ -7,7 +7,10 @@
 
         <div class="mobile-navbar">
             <div class="mobile-nav-logo">OMAC</div>
-            <div class="mobile-nav-user"><label value="@load(graph.unitBadge)"/></div>
+            <div class="mobile-nav-actions">
+                <div class="mobile-nav-user"><label value="@load(graph.unitBadge)"/></div>
+                <button label="Log Out" onClick="@global-command('logout')" sclass="mobile-logout-btn"/>
+            </div>
         </div>
 
         <div class="shell">
@@ -37,6 +40,10 @@
                     <div sclass="@load(graph.logHoursNavClass)" onClick="@global-command('showLogHours')">&#x23F0; Log Hours</div>
                     <div sclass="@load(graph.myDetailsNavClass)" onClick="@global-command('showMyDetails')">&#x1F464; My Details</div>
                 </div>
+
+                <div class="logout-section">
+                    <div sclass="nav-item logout-link" onClick="@global-command('logout')">Log Out</div>
+                </div>
             </div>
 
             <!-- Main -->
@@ -44,6 +51,7 @@
                 <div class="topbar">
                     <div class="topbar-title"><label value="@load(graph.pageTitle)"/></div>
                     <div class="badge"><label value="@load(graph.unitBadge)"/></div>
+                    <button label="Log Out" onClick="@global-command('logout')" sclass="btn-ghost logout-button"/>
                 </div>
 
                 <div class="content-area">

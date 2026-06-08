@@ -2,11 +2,15 @@ package OMAC_Webapp.viewmodel;
 
 import OMAC_Webapp.model.User;
 import lombok.Getter;
+import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+
+import java.util.Collections;
 
 /**
  * RootViewModel observes global login events so application-level state can
@@ -36,6 +40,19 @@ public class RootViewModel {
     @NotifyChange({"currentUser"})
     public void onUserDetailsUpdated() {
         currentUser = (User) Sessions.getCurrent().getAttribute("currentUser");
+    }
+
+    @Command
+    @GlobalCommand
+    @NotifyChange({"userLoggedIn", "currentUser"})
+    public void logout() {
+        Sessions.getCurrent().removeAttribute("omacId");
+        Sessions.getCurrent().removeAttribute("currentUser");
+        currentUser = null;
+        userLoggedIn = false;
+        BindUtils.postGlobalCommand(null, null, "onUserLoggedOut", Collections.emptyMap());
+        Sessions.getCurrent().invalidate();
+        Executions.sendRedirect("/");
     }
 
     @Command
