@@ -4,7 +4,9 @@
 	<?link rel="shortcut icon" type="image/x-icon" href="favicon.ico"?>
 	<?link rel="stylesheet" type="text/css" href="css/style.css"?>
 
-	<window border="none" width="100%">
+	<window border="none" width="100%"
+			apply="org.zkoss.bind.BindComposer"
+			viewModel="@id('root')@init('OMAC_Webapp.viewmodel.RootViewModel')">
 		<include src="pages/auth.zul"/>
 		<div visible="@load(root.userLoggedIn)">
 			<include src="pages/dashboard.zul"/>
